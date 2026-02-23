@@ -1,27 +1,55 @@
-/*
-CSC242 – Final Group Project
-Project: P8.2 Spell Checker
-File Name: SpellChecker.cpp
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <algorithm> // for std::find
+#include <cctype>    // for std::ispunct
 
-Description:
-This program reads a dictionary file and stores all words in a vector.
-It then reads another text file and checks each word. If a word is not
-found in the dictionary vector, the program prints the word to the screen.
+// Function to remove punctuation from a word
+std::string cleanWord(const std::string &word) {
+    std::string cleaned;
+    for (char c : word) {
+        if (!std::ispunct(c))
+            cleaned += c;
+    }
+    return cleaned;
+}
 
-Usage:
-Place "words.txt" (dictionary) and "input.txt" (file to check)
-in the same folder as this program, then run the program.
+int main() {
+    std::ifstream dictFile("/usr/share/dict/words");
+    if (!dictFile) {
+        std::cerr << "Could not open dictionary file.\n";
+        return 1;
+    }
 
-Inputs:
-- Dictionary file (words.txt)
-- Input file containing words to check (input.txt)
+    std::vector<std::string> words;
+    std::string word;
 
-Outputs:
-- Prints words that are not found in the dictionary
+    // Read dictionary words into vector
+    while (dictFile >> word) {
+        words.push_back(word);
+    }
+    dictFile.close();
 
-Team Members:
-- Eric Amidei
-- Kevin Ferry
-- Jose Lopez-Arredondo
-*/
+    std::ifstream checkFile("file_to_check.txt");
+    if (!checkFile) {
+        std::cerr << "Could not open file to check.\n";
+        return 1;
+    }
+
+    // Check each word in the file
+    while (checkFile >> word) {
+        std::string cleaned = cleanWord(word);
+
+        // Convert to lowercase for case-insensitive comparison
+        std::transform(cleaned.begin(), cleaned.end(), cleaned.begin(), ::tolower);
+
+        if (std::find(words.begin(), words.end(), cleaned) == words.end()) {
+            std::cout << cleaned << "\n";
+        }
+    }
+
+    checkFile.close();
+    return 0;
+}
 
