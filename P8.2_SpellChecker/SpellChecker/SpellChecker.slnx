@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="SpellChecker.vcxproj" />
+  <Project Path="SpellChecker.vcxproj" Id="59f9ab1d-3daa-4dc3-929b-b88097931f8b" />
 </Solution>

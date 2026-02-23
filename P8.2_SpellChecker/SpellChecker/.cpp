@@ -16,7 +16,7 @@ std::string cleanWord(const std::string &word) {
 }
 
 int main() {
-    std::ifstream dictFile("/usr/share/dict/words");
+    std::ifstream dictFile("words.txt");//EA changed the dictionary file location
     if (!dictFile) {
         std::cerr << "Could not open dictionary file.\n";
         return 1;
@@ -27,11 +27,13 @@ int main() {
 
     // Read dictionary words into vector
     while (dictFile >> word) {
+        std::transform(word.begin(), word.end(), word.begin(), ::tolower);
+        //EA added line to check for both case words from dictionary
         words.push_back(word);
     }
     dictFile.close();
 
-    std::ifstream checkFile("file_to_check.txt");
+    std::ifstream checkFile("input.txt");//EA changed the file containing test words to input
     if (!checkFile) {
         std::cerr << "Could not open file to check.\n";
         return 1;
