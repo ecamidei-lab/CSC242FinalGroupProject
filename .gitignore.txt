@@ -1,0 +1,15 @@
+# Visual Studio files to ignore
+.vs/
+**/.vs/
+*.suo
+*.ipch
+*.db
+Browse.VC.db
+x64/
+Debug/
+Release/
+*.obj
+*.exe
+*.pdb
+*.ilk
+*.log

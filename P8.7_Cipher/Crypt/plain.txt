@@ -1,0 +1,5 @@
+CSC242 Final Group Project Test
+Encryption and Decryption should work correctly.
+Eric, Kevin, and Jose will all be getting A's.
+Hello World! Programming in C++ is fun.
+Test message number 12345.
