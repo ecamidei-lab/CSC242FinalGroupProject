@@ -27,182 +27,50 @@ Team Members:
 */
 
 #include <iostream>
-#include <fstream>
 #include <string>
+#include <unordered_set>
 #include <cctype>
 
 using namespace std;
 
-// Author: 
-// Check if character exists in string
-bool containsChar(const string& s, char c)
-{
-    for (int i = 0; i < s.length(); i++)
-    {
-        if (s[i] == c)
-            return true;
-    }
-    return false;
-}
+const string ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-// Author: 
-// Remove duplicate letters and convert to uppercase
-string removeDuplicates(const string& keyword)
-{
-    string result = "";
+string generateCipherAlphabet(const string& keyword) {
+    string result;
+    unordered_set<char> used;
 
-    for (int i = 0; i < keyword.length(); i++)
-    {
-        char c = toupper(keyword[i]);
-
-        if (c >= 'A' && c <= 'Z')
-        {
-            if (!containsChar(result, c))
-            {
+    // Add keyword letters (remove duplicates)
+    for (char c : keyword) {
+        if (isalpha(c)) {
+            c = toupper(c);
+            if (!used.count(c)) {
                 result += c;
+                used.insert(c);
             }
+        }
+    }
+
+    // Append remaining letters in reverse order
+    for (int i = 25; i >= 0; --i) {
+        char c = ALPHABET[i];
+        if (!used.count(c)) {
+            result += c;
         }
     }
 
     return result;
 }
 
-// Author: 
-// Build cipher alphabet
-string buildCipherAlphabet(const string& cleanedKey)
-{
-    string cipher = cleanedKey;
+int main() {
+    string keyword;
 
-    for (char c = 'Z'; c >= 'A'; c--)
-    {
-        if (!containsChar(cipher, c))
-        {
-            cipher += c;
-        }
-    }
+    cout << "Enter keyword: ";
+    cin >> keyword;
 
-    return cipher;
-}
+    string cipherAlphabet = generateCipherAlphabet(keyword);
 
-// Author: 
-// Encrypt one letter
-char encryptLetter(char c, const string& cipher)
-{
-    int index = toupper(c) - 'A';
-    char encrypted = cipher[index];
-
-    if (islower(c))
-        encrypted = tolower(encrypted);
-
-    return encrypted;
-}
-
-// Author: 
-// Decrypt one letter
-char decryptLetter(char c, const string& cipher)
-{
-    char upper = toupper(c);
-
-    for (int i = 0; i < cipher.length(); i++)
-    {
-        if (cipher[i] == upper)
-        {
-            char decrypted = 'A' + i;
-
-            if (islower(c))
-                decrypted = tolower(decrypted);
-
-            return decrypted;
-        }
-    }
-
-    return c;
-}
-
-// Author: 
-// Encrypt or decrypt file
-void transformFile(string inputFile, string outputFile, string cipher, bool decryptMode)
-{
-    ifstream fin(inputFile);
-    ofstream fout(outputFile);
-
-    if (!fin)
-    {
-        cout << "Could not open input file.\n";
-        return;
-    }
-
-    if (!fout)
-    {
-        cout << "Could not open output file.\n";
-        return;
-    }
-
-    char c;
-
-    while (fin.get(c))
-    {
-        if (isalpha(c))
-        {
-            if (decryptMode)
-                fout << decryptLetter(c, cipher);
-            else
-                fout << encryptLetter(c, cipher);
-        }
-        else
-        {
-            fout << c;
-        }
-    }
-
-    fin.close();
-    fout.close();
-}
-
-// Author: 
-// Main function
-int main(int argc, char* argv[])
-{
-    if (argc != 4 && argc != 5)
-    {
-        cout << "Usage:\n";
-        cout << "Encrypt: crypt -kKEY input.txt output.txt\n";
-        cout << "Decrypt: crypt -d -kKEY input.txt output.txt\n";
-        return 1;
-    }
-
-    bool decryptMode = false;
-    string keyArg;
-    string inputFile;
-    string outputFile;
-
-    if (argc == 4)
-    {
-        keyArg = argv[1];
-        inputFile = argv[2];
-        outputFile = argv[3];
-    }
-    else
-    {
-        decryptMode = true;
-        keyArg = argv[2];
-        inputFile = argv[3];
-        outputFile = argv[4];
-    }
-
-    if (keyArg.substr(0, 2) != "-k")
-    {
-        cout << "Keyword must start with -k\n";
-        return 1;
-    }
-
-    string keyword = keyArg.substr(2);
-
-    string cleanedKey = removeDuplicates(keyword);
-
-    string cipher = buildCipherAlphabet(cleanedKey);
-
-    transformFile(inputFile, outputFile, cipher, decryptMode);
+    cout << "Generated cipher alphabet:\n";
+    cout << cipherAlphabet << endl;
 
     return 0;
 }
