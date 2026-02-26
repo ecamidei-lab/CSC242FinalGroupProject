@@ -8,10 +8,6 @@ This program encrypts or decrypts a text file using a keyword cipher.
 The program removes duplicate letters from the keyword, builds a cipher alphabet,
 and uses it to transform the input file. The result is written to an output file.
 
-Usage Examples:
-Encrypt: crypt -kFEATHER input.txt output.txt
-Decrypt: crypt -d -kFEATHER input.txt output.txt
-
 Inputs:
 - Keyword supplied using -k option
 - Input text file
@@ -27,6 +23,7 @@ Team Members:
 */
 
 #include <iostream>
+#include <fstream>      // For file output
 #include <string>
 #include <unordered_set>
 #include <cctype>
@@ -35,6 +32,7 @@ using namespace std;
 
 const string ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+// Author: Kevin Ferry
 string generateCipherAlphabet(const string& keyword) {
     string result;
     unordered_set<char> used;
@@ -71,6 +69,18 @@ int main() {
 
     cout << "Generated cipher alphabet:\n";
     cout << cipherAlphabet << endl;
+
+    // Write output to file
+    ofstream outFile("cipher_output.txt");
+    if (outFile.is_open()) {
+        outFile << "Keyword: " << keyword << "\n";
+        outFile << "Generated cipher alphabet: " << cipherAlphabet << "\n";
+        outFile.close();
+        cout << "Cipher alphabet written to cipher_output.txt" << endl;
+    }
+    else {
+        cerr << "Error: Could not open file for writing." << endl;
+    }
 
     return 0;
 }
