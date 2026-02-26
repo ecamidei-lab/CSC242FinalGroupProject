@@ -25,7 +25,6 @@ Team Members:
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <unordered_set>
 #include <cctype>
 
 using namespace std;
@@ -33,14 +32,14 @@ using namespace std;
 // Generate cipher alphabet from keyword
 string generateCipherAlphabet(const string& keyword) {
     string result;
-    unordered_set<char> used;
+    string used;
 
     for (char c : keyword) {
         if (isalpha(c)) {
             c = toupper(c);
-            if (!used.count(c)) {
+            if (used.find(c) == string::npos) {
                 result += c;
-                used.insert(c);
+                used += c;
             }
         }
     }
@@ -48,7 +47,7 @@ string generateCipherAlphabet(const string& keyword) {
     const string ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     for (int i = 25; i >= 0; --i) {
         char c = ALPHABET[i];
-        if (!used.count(c)) {
+        if (used.find(c) == string::npos) {
             result += c;
         }
     }
@@ -56,28 +55,18 @@ string generateCipherAlphabet(const string& keyword) {
     return result;
 }
 
-// Encrypt a keyword (just returns its cipher alphabet)
+// Encrypt a keyword (returns cipher alphabet)
 string encryptKeyword(const string& keyword) {
     return generateCipherAlphabet(keyword);
 }
 
-// Decipher a word in cipher alphabet format to recover original keyword
-string decipherToKeyword(const string& cipherWord) {
+// Decipher using cipher alphabet to get only the original keyword
+string decipherToKeyword(const string& cipherAlphabet, int keywordLength) {
+    // Take only the first N letters from cipher alphabet, N = keyword length
     string result;
-    unordered_set<char> added;
-
-    // Only take letters until all unique letters are collected
-    for (char c : cipherWord) {
-        char upperC = toupper(c);
-        if (!added.count(upperC)) {
-            result += tolower(upperC);
-            added.insert(upperC);
-        }
-        else {
-            break; // stop once duplicates begin
-        }
+    for (int i = 0; i < keywordLength; ++i) {
+        result += tolower(cipherAlphabet[i]);
     }
-
     return result;
 }
 
@@ -113,10 +102,13 @@ int main() {
     }
     else if (choice == 2) {
         string cipherWord;
+        int keywordLength;
         cout << "Enter word in cipher alphabet format: ";
         cin >> cipherWord;
+        cout << "Enter length of original keyword: ";
+        cin >> keywordLength;
 
-        string originalKeyword = decipherToKeyword(cipherWord);
+        string originalKeyword = decipherToKeyword(cipherWord, keywordLength);
 
         cout << "Recovered keyword: " << originalKeyword << endl;
 
