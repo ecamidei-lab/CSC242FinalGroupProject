@@ -17,9 +17,9 @@ Outputs:
 - New text file containing encrypted or decrypted text
 
 Team Members:
-- Eric Amidei
-- Kevin Ferry
-- Jose Lopez-Arredondo
+- Eric Amidei (EA)
+- Kevin Ferry (KF)
+- Jose Lopez-Arredondo (JL)
 */
 
 #include <iostream>
@@ -29,7 +29,7 @@ Team Members:
 
 using namespace std;
 
-// Generate cipher alphabet from keyword
+// (KF) Generate cipher alphabet from keyword
 string generateCipherAlphabet(const string& keyword) {
     string result;
     string used;
@@ -55,12 +55,12 @@ string generateCipherAlphabet(const string& keyword) {
     return result;
 }
 
-// Encrypt a keyword (returns cipher alphabet)
+// (KF) Encrypt a keyword (returns cipher alphabet)
 string encryptKeyword(const string& keyword) {
     return generateCipherAlphabet(keyword);
 }
 
-// Decipher using cipher alphabet to get only the original keyword
+// (KF) Decipher using cipher alphabet to get only the original keyword
 string decipherToKeyword(const string& cipherAlphabet, int keywordLength) {
     // Take only the first N letters from cipher alphabet, N = keyword length
     string result;
@@ -70,6 +70,7 @@ string decipherToKeyword(const string& cipherAlphabet, int keywordLength) {
     return result;
 }
 
+//(KF)
 int main() {
     int choice;
     cout << "Select an option:\n";
