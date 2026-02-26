@@ -177,18 +177,24 @@ int main(int argc, char* argv[])
     string outputFile;
 
     if (argc == 4)
+{
+    keyArg = argv[1];
+    inputFile = argv[2];
+    outputFile = argv[3];
+}
+else if (argc == 5)
+{
+    if (string(argv[1]) != "-d")
     {
-        keyArg = argv[1];
-        inputFile = argv[2];
-        outputFile = argv[3];
+        cout << "Invalid option. Use -d for decryption.\n";
+        return 1;
     }
-    else
-    {
-        decryptMode = true;
-        keyArg = argv[2];
-        inputFile = argv[3];
-        outputFile = argv[4];
-    }
+
+    decryptMode = true;
+    keyArg = argv[2];
+    inputFile = argv[3];
+    outputFile = argv[4];
+}
 
     if (keyArg.substr(0, 2) != "-k")
     {
