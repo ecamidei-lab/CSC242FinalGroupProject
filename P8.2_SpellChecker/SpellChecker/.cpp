@@ -1,3 +1,17 @@
+/*
+CSC242 – Final Group Project
+Project: P8.2 Spell Check
+
+Description:
+Write a program that checks the spelling of all words in a file.
+
+Team Members:
+- Eric Amidei (EA)
+- Kevin Ferry (KF)
+- Jose Lopez-Arredondo (JL)
+*/
+
+
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -5,7 +19,7 @@
 #include <algorithm> // for std::find
 #include <cctype>    // for std::ispunct
 
-// Function to remove punctuation from a word
+// (KF) Function to remove punctuation from a word
 std::string cleanWord(const std::string &word) {
     std::string cleaned;
     for (char c : word) {
@@ -15,6 +29,7 @@ std::string cleanWord(const std::string &word) {
     return cleaned;
 }
 
+//(KF) Pull from file location
 int main() {
     std::ifstream dictFile("words.txt");//EA changed the dictionary file location
     if (!dictFile) {
@@ -25,7 +40,7 @@ int main() {
     std::vector<std::string> words;
     std::string word;
 
-    // Read dictionary words into vector
+    // (KF) Read dictionary words into vector
     while (dictFile >> word) {
         std::transform(word.begin(), word.end(), word.begin(), ::tolower);
         //EA added line to check for both case words from dictionary
@@ -39,7 +54,7 @@ int main() {
         return 1;
     }
 
-    // Check each word in the file
+    // (JL) Check each word in the file
     while (checkFile >> word) {
         std::string cleaned = cleanWord(word);
 
