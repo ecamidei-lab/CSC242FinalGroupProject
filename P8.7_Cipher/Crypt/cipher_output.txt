@@ -1,0 +1,5 @@
+=== Cipher Process ===
+Keyword entered: feather
+Cipher alphabet generated: FEATHRZYXWVUSQPONMLKJIGDCB
+Transformed file: encrypted.txt -> decrypted.txt
+=====================
