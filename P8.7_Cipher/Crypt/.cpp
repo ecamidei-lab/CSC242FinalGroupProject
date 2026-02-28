@@ -60,15 +60,7 @@ string encryptKeyword(const string& keyword) {
     return generateCipherAlphabet(keyword);
 }
 
-// (KF) Decipher using cipher alphabet to get only the original keyword
-string decipherToKeyword(const string& cipherAlphabet, int keywordLength) {
-    // Take only the first N letters from cipher alphabet, N = keyword length
-    string result;
-    for (int i = 0; i < keywordLength; ++i) {
-        result += (char)tolower((unsigned char)cipherAlphabet[i]);
-    }
-    return result;
-}
+// decipherToKeyword function does not work with duplicated letters (JL)
 
 // (EA) Encrypt one character using cipher alphabet
 char encryptChar(char ch, const string& cipherAlphabet) {
